@@ -18,6 +18,24 @@ function Home() {
         >
           All Items
         </button>
+
+        <button 
+          className="home-button view-button" 
+          onClick={() => (window.location.href='/addComment')}
+        >
+          addComment
+        </button>
+
+        <button 
+          className="home-button view-button" 
+          onClick={() => (window.location.href='/comments')}
+        >
+          comments
+        </button>
+        
+
+
+
       </div>
     </div>
   );
