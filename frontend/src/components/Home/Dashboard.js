@@ -19,6 +19,7 @@ import {
 import ChatUi from "./ChatUi";
 import Button from "./Button";
 import Navbar from "./Navbar";
+import ChatRoom from "../ChatRoom/ChatRoom";
 
 function Dashboard() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -147,7 +148,7 @@ function Dashboard() {
             </div>
 
             {/* Right Sidebar */}
-            <div className="w-full lg:w-1/4">
+            <div className="w-full lg:w-1/2">
               <div className="bg-white rounded-lg shadow p-4 mb-4">
                 <h4 className="font-medium text-lg mb-3">Add to your feed</h4>
                 <div className="space-y-4">
@@ -171,7 +172,7 @@ function Dashboard() {
               </div>
 
               <div className="sticky top-20">
-                <ChatUi />
+                <ChatRoom />
               </div>
             </div>
           </div>
