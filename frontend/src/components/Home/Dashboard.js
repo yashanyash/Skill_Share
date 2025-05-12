@@ -179,7 +179,7 @@ function Dashboard() {
               </div>
 
               <div className="sticky top-20">
-                <ChatRoom/>
+                <ChatRoom />
               </div>
             </div>
           </div>
