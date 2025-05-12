@@ -58,42 +58,55 @@ const SkillPostTable = () => {
     }
 
     return (
-        <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-300">
-                <thead>
-                    <tr>
-                        <th className="py-2 px-4 border-b">ID</th>
-                        <th className="py-2 px-4 border-b">Description</th>
-                        <th className="py-2 px-4 border-b">Upload Date</th>
-                        <th className="py-2 px-4 border-b">Actions</th>
-                    </tr>
+        <div className="p-6 bg-gray-100 min-h-screen">
+          <div className="bg-white shadow-md rounded-xl overflow-hidden">
+            <div className="p-4 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-700">Uploaded Posts</h2>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-sm text-left text-gray-700">
+                <thead className="bg-gray-200 text-gray-600 uppercase text-xs">
+                  <tr>
+                    <th className="px-6 py-3">ID</th>
+                    <th className="px-6 py-3">Description</th>
+                    <th className="px-6 py-3">Upload Date</th>
+                    <th className="px-6 py-3">Actions</th>
+                  </tr>
                 </thead>
-                <tbody>
-                    {posts.map((post) => (
-                        <tr key={post.id}>
-                            <td className="py-2 px-4 border-b">{post.id}</td>
-                            <td className="py-2 px-4 border-b">{post.description}</td>
-                            <td className="py-2 px-4 border-b">{new Date(post.uploadDate).toLocaleString()}</td>
-                            <td className="py-2 px-4 border-b">
-                                <button
-                                    onClick={() => handleEdit(post)}
-                                    className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
-                                >
-                                    Edit
-                                </button>
-                                <button
-                                    onClick={() => handleDelete(post.id)}
-                                    className="bg-red-500 text-white px-2 py-1 rounded"
-                                >
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {posts.map((post) => (
+                    <tr
+                      key={post.id}
+                      className="hover:bg-gray-100 transition duration-200"
+                    >
+                      <td className="px-6 py-4 font-medium">{post.id}</td>
+                      <td className="px-6 py-4">{post.description}</td>
+                      <td className="px-6 py-4">
+                        {new Date(post.uploadDate).toLocaleString()}
+                      </td>
+                      <td className="px-6 py-4 space-x-2">
+                        <button
+                          onClick={() => handleEdit(post)}
+                          className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(post.id)}
+                          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
-            </table>
+              </table>
+            </div>
+          </div>
         </div>
-    );
+      );
+      
 };
 
 export default SkillPostTable;

@@ -9,6 +9,8 @@ import AddComment from './components/AddComment/AddComment';
 import DisplayComment from './components/DisplayComment/DisplayComment';
 import EditComment from './components/EditComment/EditComment';
 import Dashboard from "./components/Home/Dashboard";
+import SkillFrom from "./components/skill/SkillFrom";
+import SkillPostTable from "./components/skill/SkillPostTable";
 
 function App() {
   return (
@@ -24,6 +26,9 @@ function App() {
           <Route path="/comments" element={<DisplayComment />} />
           <Route path="/editComment/:id" element={<EditComment />} />
           <Route path="/viewComment/:id" element={<EditComment />} />
+
+          <Route path="/skillform" element={<SkillFrom/>} />
+        <Route path="/skillpostlist" element={<SkillPostTable />} />
         </Routes>
       </React.Fragment>
      
