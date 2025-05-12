@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+
+import axios from "axios";
 
 import {
   ThumbsUp,
@@ -19,52 +21,32 @@ import {
 import ChatUi from "./ChatUi";
 import Button from "./Button";
 import Navbar from "./Navbar";
+import ChatRoom from "../ChatRoom";
 
 function Dashboard() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      author: "Jane Cooper",
-      role: "UX Designer at Design Co",
-      time: "2h",
-      content:
-        "Just completed a new certification in UI/UX Design! Excited to share my latest project showcasing responsive design principles and accessibility features.",
-      likes: 45,
-      comments: 12,
-      shares: 5,
-      liked: false,
-      image: "/api/placeholder/600/400",
-    },
-    {
-      id: 2,
-      author: "Alex Morgan",
-      role: "Full Stack Developer",
-      time: "1d",
-      content:
-        "Learning Tailwind CSS has been a game-changer for my development workflow. Here's a quick tip: utilize the @apply directive to extract repeated utility patterns into custom components!",
-      likes: 89,
-      comments: 24,
-      shares: 15,
-      liked: true,
-      image: null,
-    },
-  ]);
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [imgErrors, setImgErrors] = useState({});
 
-  const toggleLike = (postId) => {
-    setPosts(
-      posts.map((post) => {
-        if (post.id === postId) {
-          return {
-            ...post,
-            likes: post.liked ? post.likes - 1 : post.likes + 1,
-            liked: !post.liked,
-          };
-        }
-        return post;
-      })
-    );
-  };
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8081/api/postuploads"
+        );
+        setPosts(response.data);
+      } catch (err) {
+        setError("Failed to fetch posts");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -87,8 +69,8 @@ function Dashboard() {
                     </div>
                   </div>
                   <div className="text-center mt-2">
-                    <h3 className="font-semibold text-lg">John Doe</h3>
-                    <p className="text-sm text-gray-500">Product Designer</p>
+                    <h3 className="font-semibold text-lg">Himaya</h3>
+                    <p className="text-sm text-gray-500">Web developer</p>
                   </div>
                 </div>
               </div>
@@ -113,41 +95,67 @@ function Dashboard() {
               </div>
 
               {/* Posts */}
-              {posts.map((post) => (
-                <div key={post.id} className="bg-white rounded-lg shadow mb-6">
-                  <div className="p-4">
-                    <div className="flex items-center">
-                      <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
-                        <User size={20} />
-                      </div>
-                      <div className="ml-3">
-                        <h3 className="font-semibold text-gray-900">
-                          {post.author}
-                        </h3>
-                        <div className="text-gray-500 text-sm">
-                        {post.time}
+              {loading ? (
+                <div className="text-center py-6">Loading posts...</div>
+              ) : error ? (
+                <div className="text-center text-red-600">{error}</div>
+              ) : posts.length === 0 ? (
+                <div className="text-center text-gray-500 py-6">
+                  No skills posted yet.
+                </div>
+              ) : (
+                posts.map((post) => (
+                  <div
+                    key={post.id}
+                    className="bg-white rounded-lg shadow mb-6"
+                  >
+                    <div className="p-4">
+                      <div className="flex items-center">
+                        <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
+                          <User size={20} />
+                        </div>
+                        <div className="ml-3">
+                          <h3 className="font-semibold text-gray-900">
+                            Skill Post
+                          </h3>
+                          <div className="text-gray-500 text-sm">
+                            {new Date(post.uploadDate).toLocaleString()}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="mt-3">
-                      <p className="text-gray-800">{post.content}</p>
-                    </div>
-                    {post.image && (
                       <div className="mt-3">
-                        <img
-                          src={post.image}
-                          alt="Post content"
-                          className="w-full rounded-md"
-                        />
+                        <p className="text-gray-800">{post.description}</p>
                       </div>
-                    )}
+                      <div className="grid grid-cols-2 gap-1 mt-3">
+                        {post.photoPaths.map((path, index) =>
+                          !imgErrors[`${post.id}-${index}`] ? (
+                            <img
+                            src={`http://localhost:8081${path}`} // path is like /uploads/filename.jpg
+                            alt={`Skill image ${index + 1}`}
+                            className="w-full h-40 object-cover"
+                           
+                          />
+                          
+                          ) : (
+                            <div
+                              key={index}
+                              className="w-full h-40 bg-gray-200 flex items-center justify-center"
+                            >
+                              <span className="text-gray-500 text-sm">
+                                Image not available
+                              </span>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
 
             {/* Right Sidebar */}
-            <div className="w-full lg:w-1/4">
+            <div className="w-full lg:w-1/2">
               <div className="bg-white rounded-lg shadow p-4 mb-4">
                 <h4 className="font-medium text-lg mb-3">Add to your feed</h4>
                 <div className="space-y-4">
@@ -171,7 +179,7 @@ function Dashboard() {
               </div>
 
               <div className="sticky top-20">
-                <ChatUi />
+                <ChatRoom/>
               </div>
             </div>
           </div>

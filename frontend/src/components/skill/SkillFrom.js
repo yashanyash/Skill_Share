@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Navbar from "../Home/Navbar";
+import { useNavigate  } from "react-router-dom";
 
 function SkillUploadForm() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     description: "",
     files: [], // To hold multiple files
@@ -42,17 +45,18 @@ function SkillUploadForm() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8081/api/postuploads/upload", // Adjust the URL as needed
+        "http://localhost:8081/api/postuploads/upload",
         data
       );
-
+    
       Swal.fire({
         icon: "success",
         title: "Upload Successful",
         text: response.data || "Your post has been uploaded!",
+      }).then(() => {
+        navigate("/"); // Navigate after user clicks "OK"
       });
-
-      // Optionally reset formData here
+    
       setFormData({
         description: "",
         files: [],
