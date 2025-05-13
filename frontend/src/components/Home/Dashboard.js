@@ -19,7 +19,8 @@ import {
 import ChatUi from "./ChatUi";
 import Button from "./Button";
 import Navbar from "./Navbar";
-import ChatRoom from "../ChatRoom/ChatRoom";
+import ChatRoom from "../ChatRoom";
+
 
 function Dashboard() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
